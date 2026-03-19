@@ -55,12 +55,12 @@ if st.button("Predict Risk"):
 
     st.subheader("📊 Result")
 
-    if prob < 0.4:
-        st.success("✅ Low Mental Health Risk")
-    elif prob < 0.7:
-        st.warning("⚠️ Medium Mental Health Risk")
-    else:
-        st.error("🚨 High Mental Health Risk")
+    if prob < 0.3:
+    st.success("✅ Low Mental Health Risk")
+elif prob < 0.6:
+    st.warning("⚠️ Medium Mental Health Risk")
+else:
+    st.error("🚨 High Mental Health Risk")
 
     st.write(f"🔍 Confidence Score: {prob:.2f}")
 
