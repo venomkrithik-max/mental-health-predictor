@@ -17,15 +17,12 @@ This AI system predicts mental health risk based on:
 - Workplace stress
 - Company support
 - Personal factors
-
-👉 Helps in early detection and prevention.
 """)
 
-# Input Section
+# Inputs
 st.subheader("📋 Enter your details")
 
 age = st.slider("Age", 18, 60)
-
 work_interfere = st.selectbox("Work Stress Level (0–3)", [0,1,2,3])
 remote_work = st.selectbox("Remote Work (0=No, 1=Yes)", [0,1])
 benefits = st.selectbox("Company Benefits (0/1)", [0,1])
@@ -35,6 +32,11 @@ mental_health_consequence = st.selectbox("Mental Health Consequence (0/1)", [0,1
 
 # Prediction
 if st.button("Predict Risk"):
+
+    # 🔥 NEW FEATURES (must match model)
+    support_score = benefits + care_options
+    work_life_balance = work_interfere / (support_score + 1)
+
     input_data = np.array([[ 
         age,
         work_interfere,
@@ -42,15 +44,15 @@ if st.button("Predict Risk"):
         benefits,
         care_options,
         family_history,
-        mental_health_consequence
+        mental_health_consequence,
+        support_score,
+        work_life_balance
     ]])
 
     input_scaled = scaler.transform(input_data)
 
-    # Probability prediction
     prob = model.predict_proba(input_scaled)[0][1]
 
-    # Result
     st.subheader("📊 Result")
 
     if prob < 0.4:
@@ -68,18 +70,12 @@ if st.button("Predict Risk"):
     if prob > 0.7:
         st.write("👉 Seek professional help")
         st.write("👉 Talk to HR or counselor")
-        st.write("👉 Reduce workload stress")
-
     elif prob > 0.4:
-        st.write("👉 Take regular breaks")
-        st.write("👉 Improve work-life balance")
-
+        st.write("👉 Take breaks & reduce stress")
     else:
-        st.write("👉 Maintain healthy routine")
-        st.write("👉 Continue good work-life balance")
-        st.write("👉 Stay socially connected")
+        st.write("👉 Maintain healthy lifestyle")
 
-    # 🔥 Dynamic Chart (FIXED)
+    # Dynamic Chart
     st.subheader("📈 Mental Health Factors Impact")
 
     stress_impact = work_interfere * 30
@@ -92,3 +88,14 @@ if st.button("Predict Risk"):
     }
 
     st.bar_chart(chart_data)
+
+# Business Insights
+st.subheader("💼 Business Insights")
+
+st.markdown("""
+- High stress increases mental health risk  
+- Lack of support increases vulnerability  
+- Family history plays a major role  
+
+👉 Companies should improve employee wellness programs.
+""")
