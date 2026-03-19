@@ -33,7 +33,7 @@ mental_health_consequence = st.selectbox("Mental Health Consequence (0/1)", [0,1
 # Prediction
 if st.button("Predict Risk"):
 
-    # 🔥 NEW FEATURES (must match model)
+    # Feature Engineering (must match model)
     support_score = benefits + care_options
     work_life_balance = work_interfere / (support_score + 1)
 
@@ -55,12 +55,13 @@ if st.button("Predict Risk"):
 
     st.subheader("📊 Result")
 
+    # ✅ FIXED INDENTATION + THRESHOLDS
     if prob < 0.3:
-    st.success("✅ Low Mental Health Risk")
-elif prob < 0.6:
-    st.warning("⚠️ Medium Mental Health Risk")
-else:
-    st.error("🚨 High Mental Health Risk")
+        st.success("✅ Low Mental Health Risk")
+    elif prob < 0.6:
+        st.warning("⚠️ Medium Mental Health Risk")
+    else:
+        st.error("🚨 High Mental Health Risk")
 
     st.write(f"🔍 Confidence Score: {prob:.2f}")
 
